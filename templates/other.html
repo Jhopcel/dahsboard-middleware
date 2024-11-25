@@ -1,0 +1,199 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gráficos de Clientes</title>
+</head>
+<body>
+    <!-- Portada -->
+    <header class="cover-page">
+        <div class="logo-container">
+            <img src="{% static 'images/Cencosud_logo.png' %}" alt="Logo de la empresa" class="logo">
+        </div>
+        <h1 class="main-title">{{ title.name }}</h1>
+        <h3 class="sub-title">{{ title.description }}</h3>
+        <div class="index-container">
+            <h2>Índice</h2>
+            <ul class="index-list">
+                {% for graph_key, graph_data, graph_name in graphics %}
+                    <li>{{ graph_name }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </header>
+
+    <!-- Resumen de Retención de Clientes y Ventas Totales -->
+    <main class="main">
+        <section class="section-summary">
+            <div class="case-out">
+                <h2>Retención de clientes</h2>
+                <div class="result" style="background-color: #489FB5;">{{ set_values.0.1 }}{{ set_values.0.3 }}</div>
+            </div>
+            <div class="case-out">
+                <h2>Ventas totales USD</h2>
+                <div class="result" style="background-color: #FF6F61;">{{ set_values.1.1 }}{{ set_values.1.3 }}</div>
+            </div>
+        </section>
+        <!-- Generar gráficos, cada uno en una página separada -->
+        {% for graph_key, graph_data, graph_name in graphics %}
+            <section class="section-chart">
+                <div class="chart-container">
+                    {% if graph_data %}
+                        <h2 class="chart-title">{{ graph_name }}</h2>
+                        <img src="data:image/png;base64,{{ graph_data }}" alt="Gráfico de {{ graph_name }}" class="chart-image">
+                    {% endif %}
+                </div>
+            </section>
+        {% endfor %}
+    </main>
+
+    {% if error %}
+        <p>{{ error }}</p>
+    {% endif %}
+</body>
+
+<style>
+    /* Estilo base y reset */
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+    }
+
+    /* Portada */
+    .cover-page {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh; /* Ocupa toda la pantalla */
+        text-align: center;
+        padding: 50px;
+        background-color: #ffffff;
+        margin-bottom: 200px;
+    }
+
+    .logo-container {
+        margin-bottom: 20px;
+    }
+
+    .logo {
+        max-width: 150px;
+        height: auto;
+    }
+
+    .main-title {
+        font-size: 3em;
+        color: #0957A0;
+        margin: 20px 0;
+    }
+
+    .sub-title {
+        font-size: 1.5em;
+        color: #000000;
+        margin-bottom: 40px;
+    }
+
+    .index-container {
+        margin-top: 30px;
+    }
+
+    .index-container h2 {
+        font-size: 2em;
+        margin-bottom: 15px;
+        color: #000000;
+    }
+
+    .index-list {
+        list-style: none;
+        padding: 0;
+        font-size: 1.2em;
+        color: #555;
+        margin-bottom: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .index-list li {
+        margin: 10px 0;
+    }
+
+    /* Estilo para la sección principal de gráficos */
+    .main {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .section-summary {
+        display: flex;
+        justify-content: space-around;
+        text-align: center;
+        gap: 50px;
+        margin-bottom: 100px;
+        flex-wrap: wrap;
+    }
+
+    .case-out {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        font-size: 1.2em;
+        height: 150px;
+        width: 200px;
+        border-radius: 20px;
+        padding: 15px;
+        color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .case-out h2 {
+        font-size: 1.4em;
+        margin-bottom: 10px;
+        color: #000000;
+    }
+
+    .case-out .result {
+        width: 100%;
+        height: 50px;
+        border-radius: 20px;
+        font-size: 2em;
+        font-weight: bold;
+    }
+
+    /* Estilo para cada gráfico */
+    .section-chart {
+        page-break-before: always; /* Salto de página antes de cada gráfico */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 30px 0;
+    }
+
+    .chart-container {
+        text-align: center;
+        width: 100%;
+    }
+
+    .chart-title {
+        font-size: 2em;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .chart-image {
+        width: 90%;
+        max-width: 900px;
+        height: auto;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+</style>
+</html>

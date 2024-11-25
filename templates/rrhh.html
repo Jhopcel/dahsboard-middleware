@@ -1,0 +1,155 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gráficos de Clientes</title>
+</head>
+<body>
+    <header class="header">
+        {% block content %}
+        Ingreso como: {{request.user.username}}
+        
+        {% endblock content %}
+
+        <div>
+            <strong>
+                Cencosud S.A.
+            </strong>
+        </div>
+        <div class="header-title">
+            <strong>SERVICIOS INTERNOS - Gerencia {{ profile }}</strong>
+        </div>
+
+        <div class="inicio">
+            <a href="{% url 'logout' %}">Cerrar sesión</a>
+        </div>
+    </header>
+
+    <div class="general_title">
+        <h1>
+            Dashboard - Estrategia comercial
+        </h1>
+    </div>
+
+    <main class="main">
+        <!-- <div class="dt">
+            {% if age_chart %}
+                <h2>Distribución de Edades</h2>
+                <img src="data:image/png;base64,{{ age_chart }}" alt="Gráfico de Distribución de Edades">
+            {% endif %}
+        </div>
+    
+        <div>
+            {% if customer_chart %}
+                <h2>Retención de clientes</h2>
+                <img src="data:image/png;base64,{{ customer_chart }}" alt="Gráfico de Distribución de Género">
+            {% endif %}
+        </div> -->
+        <!-- Recibir aca el tipo de sector empresarial, y que sea un valor que senvia direcatemnte desde la vista, Asi nos evitamos de tenerlo estatico, como en el siguiente ejemplo-->
+        <section>
+            <div class="case-out">
+                    <h2>Retención de clientes</h2>
+                    <strong class="result">
+                        {{ comercial.set_values.0.1 }}%
+                    </strong>
+                
+            </div>
+            <div class="case-out" style="background-color: #489FB5;">
+                    <h2>Ventas totales USD</h2>
+                    <strong class="result">
+                        {{ comercial.set_values.1.1 }}$
+                    </strong>
+            </div>
+        </section>
+        <section class="section-chart">
+            {% for graph_name, graph_data in comercial.graphics %}
+                <div>
+                    <h2>{{ graph_name | title }}</h2>
+                    <img src="data:image/png;base64,{{ graph_data }}" alt="Gráfico de {{ graph_name }}">
+                </div>
+            {% endfor %}
+        </section>
+    </main>
+
+    
+
+    {% if error %}
+        <p>{{ error }}</p>
+    {% endif %}
+</body>
+
+<style>
+    body{
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+    }
+    .main {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        background-color: #f5f5f5;
+        flex-direction: column;
+        padding: 20px;
+        gap: 20px;
+        align-items: center;
+    }
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-left: 50px;
+        padding-right: 50px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        background-color: #489FB5;
+    }
+    .header strong {
+        font-size: 20px;
+    }
+    .inicio a{
+        text-decoration: none;
+        font-size: 20px;
+        color: #ffffff;
+        font-weight: 500;
+    }
+    .general_title{
+        display: flex;
+        justify-content: center;
+        font-size: 1em;
+    }
+    .case-out{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        font-size: 1em;
+        height: 200px;
+        width: 300px;
+        border-radius: 20px;
+        background-color: orange;
+    }
+    .case-out .result{
+        font-size: 2em;
+        color: #ffffff;
+    }
+
+    main section{
+        display: flex;
+        justify-content: center;
+        gap: 200px;
+        flex-wrap: wrap;
+    }
+    .section-chart{
+        display: flex;
+        justify-content: center;
+        flex-direction: row;
+    }
+    .section-chart div img{
+        width: 600px;
+        height: 500px;
+    }
+</style>
+
+</html>

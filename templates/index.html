@@ -1,0 +1,212 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - {{ title.name }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <strong>Cencosud S.A.</strong>
+        </div>
+        <div class="header-title">
+            <strong>SERVICIOS INTERNOS - Gerencia {{ profile }}</strong>
+        </div>
+        <div class="user-menu">
+            <a href="{% url 'logout' %}" class="btn-logout">Cerrar sesión</a>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="dashboard-header">
+            <h1>Dashboard - {{ title.name }}</h1>
+        </div>
+
+        <section class="kpi-section">
+            {% for value in set_values %}
+                <div class="kpi-card" style="background-color: {% cycle '#FFA500' '#489FB5' '#4CAF50' '#9C27B0' %};">
+                    <h2>{{ value.2 }}</h2>
+                    <strong class="result">{{ value.1 }}{{ value.3 }}</strong>
+                </div>
+            {% endfor %}
+        </section>
+
+        <section class="chart-section">
+            {% for graph_key, graph_data, graph_name in graphics %}
+                <div class="chart-container">
+                    <h2>{{ graph_name | title }}</h2>
+                    <img src="data:image/png;base64,{{ graph_data }}" alt="Gráfico de {{ graph_name }}">
+                </div>
+            {% endfor %}
+        </section>
+    </main>
+
+    <a href="{% url 'pdf_wiewer' %}" target="_blank" download class="btn-download">
+        <img src="{% static 'images/download.png' %}" alt="Descargar PDF">
+        <span>Descargar Reporte</span>
+    </a>
+
+    {% if error %}
+        <div class="error-message">
+            <p>{{ error }}</p>
+        </div>
+    {% endif %}
+</body>
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Roboto', sans-serif;
+        background-color: #f5f5f5;
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 2rem;
+        background-color: #489FB5;
+        color: white;
+    }
+
+    .logo strong {
+        font-size: 1.2rem;
+    }
+
+    .header-title {
+        font-size: 1.1rem;
+    }
+
+    .btn-logout {
+        text-decoration: none;
+        color: white;
+        background-color: rgba(255, 255, 255, 0.2);
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+    }
+
+    .btn-logout:hover {
+        background-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .main {
+        padding: 2rem;
+    }
+
+    .dashboard-header {
+        margin-bottom: 2rem;
+    }
+
+    .kpi-section {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .kpi-card {
+        flex: 1 1 calc(25% - 1rem);
+        min-width: 200px;
+        background-color: #fff;
+        border-radius: 8px;
+        padding: 1.5rem;
+        text-align: center;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .kpi-card h2 {
+        margin: 0 0 1rem;
+        font-size: 1.2rem;
+        color: rgba(255, 255, 255, 0.8);
+    }
+
+    .kpi-card .result {
+        font-size: 2rem;
+        font-weight: bold;
+        color: white;
+        display: block;
+    }
+
+    .chart-section {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+    }
+
+    .chart-container {
+        flex: 1 1 calc(50% - 1rem);
+        min-width: 300px;
+        background-color: white;
+        border-radius: 8px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .chart-container h2 {
+        margin-top: 0;
+        margin-bottom: 1rem;
+        font-size: 1.2rem;
+        color: #333;
+    }
+
+    .chart-container img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 0 auto;
+    }
+
+    .btn-download {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        background-color: #4CAF50;
+        color: white;
+        text-decoration: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        transition: background-color 0.3s;
+    }
+
+    .btn-download:hover {
+        background-color: #45a049;
+    }
+
+    .btn-download img {
+        width: 24px;
+        height: 24px;
+    }
+
+    .error-message {
+        background-color: #f8d7da;
+        color: #721c24;
+        padding: 1rem;
+        border-radius: 4px;
+        margin-top: 1rem;
+    }
+
+    @media (max-width: 768px) {
+        .kpi-section {
+            flex-direction: column;
+        }
+
+        .kpi-card {
+            flex: 1 1 100%;
+        }
+
+        .chart-container {
+            flex: 1 1 100%;
+        }
+    }
+</style>
+</html>
+

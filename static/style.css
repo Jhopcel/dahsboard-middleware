@@ -1,0 +1,52 @@
+.not-visible {
+    display: none;
+}
+
+body {
+    background-color: #00AAE4;
+}
+form {
+    width: 30%;
+    margin: 0 auto;
+    margin-top: 10%;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #fff;
+}
+.form-group {
+    margin-bottom: 10px;
+}
+.form-group-2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 80px;
+}
+.form-control {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+.btn {
+    width: 50%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #007bff;
+    color: #fff;
+    margin: auto;
+    text-align: center;
+}
+.btn:hover {
+    background-color: #0056b3;
+}
+#form_message {
+    width: 30%;
+    margin: 0 auto;
+}
+.text-center {
+    display: center;
+    text-align: center;
+    flex: auto;
+}
